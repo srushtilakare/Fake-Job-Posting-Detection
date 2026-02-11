@@ -11,35 +11,40 @@ export default function DetectionForm() {
 
   return (
     <>
-      <div className="border rounded-lg p-6">
-        <div className="flex gap-4 mb-6">
-          <button
-            className={`px-4 py-2 rounded ${
-              mode === "manual" ? "bg-red-600 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => setMode("manual")}
-          >
-            Manual Entry
-          </button>
+      {/* Toggle Buttons */}
+      <div className="flex justify-center gap-4 mb-10">
+        <button
+          onClick={() => setMode("manual")}
+          className={`px-6 py-2 rounded-full text-sm font-medium ${
+            mode === "manual"
+              ? "bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-md"
+              : "bg-gray-100 text-gray-600"
+          }`}
+        >
+          Manual Entry
+        </button>
 
-          <button
-            className={`px-4 py-2 rounded ${
-              mode === "url" ? "bg-red-600 text-white" : "bg-gray-200"
-            }`}
-            onClick={() => setMode("url")}
-          >
-            Paste Job URL
-          </button>
-        </div>
-
-        {mode === "manual" ? (
-          <ManualInput onResult={setResult} />
-        ) : (
-          <UrlInput onResult={setResult} />
-        )}
+        <button
+          onClick={() => setMode("url")}
+          className={`px-6 py-2 rounded-full text-sm font-medium ${
+            mode === "url"
+              ? "bg-gradient-to-r from-red-600 to-pink-600 text-white shadow-md"
+              : "bg-gray-100 text-gray-600"
+          }`}
+        >
+          Paste Job URL
+        </button>
       </div>
 
-      <ResultPanel result={result} />
+      {/* Form Section */}
+      {mode === "manual" ? (
+        <ManualInput onResult={setResult} />
+      ) : (
+        <UrlInput onResult={setResult} />
+      )}
+
+      {/* Result */}
+      {result && <ResultPanel result={result} />}
     </>
   );
 }

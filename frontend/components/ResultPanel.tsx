@@ -1,74 +1,45 @@
 type ResultProps = {
-  result: {
-    prediction: "FAKE" | "REAL";
-    fake_probability: number;
-    threshold: number;
-  } | null;
+  result: any;
 };
 
 export default function ResultPanel({ result }: ResultProps) {
-  if (!result) {
-    return (
-      <div className="border rounded-lg p-6 bg-gray-50 mt-6">
-        <p className="text-gray-500">
-          Submit a job posting to see detection results.
-        </p>
-      </div>
-    );
-  }
-
-  const probabilityPercent = Math.round(result.fake_probability * 100);
-
-  let riskLevel = "Low Risk";
-  let barColor = "bg-green-500";
-
-  if (result.fake_probability >= result.threshold) {
-    riskLevel = "High Risk";
-    barColor = "bg-red-600";
-  } else if (result.fake_probability >= result.threshold - 0.15) {
-    riskLevel = "Medium Risk";
-    barColor = "bg-yellow-500";
-  }
+  const probability = Math.round(result.fake_probability * 100);
 
   return (
-    <div className="border rounded-lg p-6 mt-6">
-      <h3 className="text-lg font-semibold mb-4">Analysis Result</h3>
+    <div className="mt-12 bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl p-8 shadow-lg">
 
-      {/* Prediction Badge */}
-      <div className="mb-3">
+      <h3 className="text-xl font-semibold mb-6 text-center">
+        Analysis Result
+      </h3>
+
+      <div className="text-center mb-6">
         <span
-          className={`px-3 py-1 rounded-full text-white text-sm ${
+          className={`px-5 py-2 rounded-full text-sm font-semibold ${
             result.prediction === "FAKE"
-              ? "bg-red-600"
-              : "bg-green-600"
+              ? "bg-red-100 text-red-600"
+              : "bg-green-100 text-green-600"
           }`}
         >
           {result.prediction}
         </span>
       </div>
 
-      {/* Probability Bar */}
-      <div className="mb-3">
-        <p className="text-sm mb-1">
-          Fake Probability: <strong>{probabilityPercent}%</strong>
-        </p>
-
-        <div className="w-full bg-gray-200 rounded-full h-3">
-          <div
-            className={`${barColor} h-3 rounded-full transition-all`}
-            style={{ width: `${probabilityPercent}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Risk Level */}
-      <p className="mb-1">
-        <strong>Risk Level:</strong>{" "}
-        <span className="font-semibold">{riskLevel}</span>
+      <p className="text-center mb-4">
+        Fake Probability: <strong>{probability}%</strong>
       </p>
 
-      {/* Threshold */}
-      <p className="text-sm text-gray-500">
+      <div className="w-full bg-gray-200 h-4 rounded-full overflow-hidden mb-4">
+        <div
+          className={`h-4 ${
+            result.prediction === "FAKE"
+              ? "bg-gradient-to-r from-red-500 to-pink-500"
+              : "bg-gradient-to-r from-green-500 to-emerald-500"
+          }`}
+          style={{ width: `${probability}%` }}
+        />
+      </div>
+
+      <p className="text-sm text-gray-500 text-center">
         Decision threshold: {result.threshold}
       </p>
     </div>
